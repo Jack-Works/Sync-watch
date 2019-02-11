@@ -5,9 +5,17 @@
  * * an object (See ./src/Comps/gun.d.ts)
  */
 {
+    let servers = [
+        // use public gun server?
+        (() => (
+            console.warn('You are using public gun server. Maybe you should build your own one'),
+            'http://gungame.herokuapp.com/gun'
+        ))(),
+    ]
     if (location.hostname === 'localhost') {
-        window.__sync_watch__ = 'http://localhost:8765/gun'
+        servers.push('http://localhost:8765/gun')
     } else {
-        window.__sync_watch__ = location.protocol + '//' + location.host + '/gun'
+        servers.push(location.origin + '/gun')
     }
+    window.__sync_watch__ = servers
 }

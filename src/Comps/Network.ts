@@ -16,7 +16,7 @@ export type State = {
 let gunServer = (<any>window).__sync_watch__ || '/gun'
 const conn = Gun<Record<string, State>>(gunServer)
 // export const conn = Gun<Record<string, State>>()
-export const getStore = memo((session: string) => conn.get(session))
+export const getStore = memo((session: string) => conn.get('sync_watch_' + session))
 export type MessageWithTime = { data: State['chatRoom']; time: number }
 class Chat extends EventEmitter {
     public readonly MAX = 60

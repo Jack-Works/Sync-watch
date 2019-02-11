@@ -81,9 +81,20 @@ export const messages = {
     },
 }
 
-export const clipboard = (navigator as any).clipboard || {
-    writeText: () => Promise.reject(),
-}
+export const clipboard = {
+    async writeText(text: string) {
+        const input = document.createElement('input')
+        input.value = text
+        document.execCommand('copy')
+        document.body.appendChild(input)
+        input.select()
+        document.execCommand('Copy')
+        document.body.removeChild(input)
+    },
+} ||
+    (navigator as any).clipboard || {
+        writeText: () => Promise.reject(),
+    }
 
 export let showToast = (name: string) => {}
 export function GlobalToast() {

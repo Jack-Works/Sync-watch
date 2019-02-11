@@ -8,6 +8,6 @@
     if (location.hostname === 'localhost') {
         window.__sync_watch__ = 'http://localhost:8765/gun'
     } else {
-        window.__sync_watch__ = '/gun'
+        window.__sync_watch__ = location.protocol + '//' + location.host + '/gun'
     }
 }

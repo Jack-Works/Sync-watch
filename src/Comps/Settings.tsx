@@ -106,7 +106,9 @@ export function AskName(props: { onNext(name: string): void }) {
                     {ty => (
                         <div>
                             懒得打，给我随便{' '}
-                            <Button onClick={() => props.onNext(uuid().match(/[a-z0-9]{5}/)![0])}>整一个</Button>
+                            <Button onClick={() => props.onNext(uuid().match(/[a-z0-9]{5}/)![0])} tabIndex={1}>
+                                整一个
+                            </Button>
                         </div>
                     )}
                 </Typography>

@@ -49,10 +49,6 @@ aside {
     overflow: hidden;
 }
 
-aside h5 {
-    margin: 12px;
-}
-
 aside .list {
     width: 100%;
     flex: 1;

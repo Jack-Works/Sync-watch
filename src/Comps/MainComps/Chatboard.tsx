@@ -2,9 +2,12 @@ import React, { ReactNode } from 'react'
 import ListView, { ListItem } from 'react-uwp/ListView'
 import CustomAnimate from 'react-uwp/Animate/CustomAnimate'
 
-import { getChatroom, State, MessageWithTime } from '../Network'
+import { getChatroom, MessageWithTime } from '../Network'
 import { Input, messages } from '../utils'
 import Typography from '../Typography'
+import CommandBar from 'react-uwp/CommandBar'
+import AppBarButton from 'react-uwp/AppBarButton'
+import AppBarSeparator from 'react-uwp/AppBarSeparator'
 
 interface Props {
     data: MessageWithTime[]
@@ -46,7 +49,25 @@ function Chatboard(props: Props) {
     const data = props.data.map(ListNode)
     return (
         <aside>
-            <Typography>{ty => <h5 style={ty.title}>Chat</h5>}</Typography>
+            <CommandBar
+                labelPosition="right"
+                flowDirection="row"
+                contentNode={<Typography>{ty => <h5 style={{ ...ty.title, lineHeight: '48px' }}>Chat</h5>}</Typography>}
+                primaryCommands={[
+                    <AppBarButton
+                        icon="Upload"
+                        label="同步进度"
+                        onClick={() => dispatchEvent(new Event('sync-progress'))}
+                    />,
+                ]}
+                secondaryCommands={[
+                    <AppBarButton
+                        icon="Clear"
+                        label="清除通知"
+                        onClick={() => dispatchEvent(new Event('clear-notification'))}
+                    />,
+                ]}
+            />
             <Input onCommit={props.onNewMessage} autoFocus clearOnCommit icon="Send" style={{ width: '100%' }} />
             <div className="list">
                 <ListView

@@ -29,12 +29,17 @@ class Chat extends EventEmitter {
         chat.time!((data, key, time) => {
             data = JSON.parse((data as any) as string)
             data.type = 'chat'
+            if (data.text === messages.JOINED) dispatchEvent(new Event('sync-progress'))
             this._m.push({ data, time })
             this.emit('new-all', this.messages)
             this.emit('new', this.messages)
         }, this.MAX)
-        this.broadcastLocal(`我们最多显示 ${this.MAX} 条消息`)
-        this.broadcastLocal(`系统信息并非完全可信，请注意`)
+        addEventListener('clear-notification', () => {
+            this._m = this._m.filter(x => x.data.type === 'chat' && !messages.getString(x.data))
+            this.emit('new-all', this.messages)
+            this.emit('new', this.messages)
+        })
+        this.broadcastLocal(`最多显示 ${this.MAX} 条消息`)
         this.broadcast(messages.JOINED)
     }
     broadcastLocal = (text: string) => {
@@ -55,12 +60,6 @@ class Chat extends EventEmitter {
     removeAllMessageChangeListener(cb: (val: MessageWithTime[]) => void) {
         return this.removeListener('new-all', cb)
     }
-    // addNewMessageListener(cb: (val: State['chatRoom']) => void) {
-    //     return this.addListener('new', cb)
-    // }
-    // removeNewMessageListener(cb: (val: State['chatRoom']) => void) {
-    //     return this.removeListener('new', cb)
-    // }
 }
 
 export const getChatroom = memo(

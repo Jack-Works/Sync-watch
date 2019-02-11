@@ -27,20 +27,23 @@ export default function Composed(props: Props) {
 
     if (firstLoad && props.src.match('youtube.')) {
         chatRoom.broadcastLocal('Youtube 视频如果黑屏，请尝试刷新重新进入')
+        firstLoad = false
     }
 
-    let timer: NodeJS.Timer
     useEffect(() => {
         if (!ref.current) return
         const video = new AbstractVideoElement(ref.current)
         let node = store.get('currentTime')
         let node2 = store.get('isPlaying')
+
+        const PublishProgressToRemote = () => {
+            store.get('currentTime').put(video.currentTime)
+        }
         video.untilReady.then(() => {
             // 同步远程的进度
             node = node.on(time => {
                 console.info(`远程进度=${time} 本地进度=${video.currentTime}`)
                 if (Math.abs(time - video.currentTime) < 2) return
-                if (time === 0) return
                 console.info(`与远程同步进度 ${time}`)
                 video.currentTime = time
             })
@@ -58,8 +61,6 @@ export default function Composed(props: Props) {
                 chatRoom.broadcast(messages.JUMPED(time))
             })
             const playingStatus = (event: Parameters<Parameters<typeof video.addEventListener>[1]>[0]) => {
-                console.log(event)
-
                 if (!event.isTrusted) return
                 store.get('isPlaying').put(!video.paused)
                 getChatroom(props.session, props.name).broadcast(!video.paused ? messages.RESUMED : messages.PAUSED)
@@ -67,17 +68,13 @@ export default function Composed(props: Props) {
             }
             video.addEventListener('play', playingStatus)
             video.addEventListener('pause', playingStatus)
-            // 发布本地进度
-            timer = setInterval(() => {
-                console.info(`发布进度到远程 ${video.currentTime}`)
-                store.get('currentTime').put(video.currentTime)
-            }, 5000)
+            addEventListener('sync-progress', PublishProgressToRemote)
         })
         return () => {
             video.destory()
             node.off()
             node2.off()
-            clearInterval(timer)
+            removeEventListener('sync-progress', PublishProgressToRemote)
         }
     })
     return (

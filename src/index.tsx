@@ -13,8 +13,9 @@ function App() {
             theme={{
                 ...getTheme({
                     useFluentDesign: true,
-                    desktopBackgroundImage: '/sky-828648_1920.jpg',
+                    desktopBackgroundImage: '/abstract-3205415_1920.jpg',
                     // useInlineStyle: true,
+                    themeName: 'dark',
                 } as ThemeConfig),
                 fonts: {
                     sansSerifFonts:

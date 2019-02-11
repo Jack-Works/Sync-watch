@@ -15,7 +15,11 @@ const ListNode = function(data: MessageWithTime): ListItem {
     const _ = messages.getString(data.data) || data.data
     const node: Record<(typeof _)['type'], (d: typeof _) => ReactNode> = {
         chat: data => `${data.from}: ${data.text}`,
-        system: data => <Typography>{ty => <span style={ty.caption}>{data.text}</span>}</Typography>,
+        system: data => (
+            <Typography>
+                {ty => <span style={{ ...ty.caption, color: 'rgba(255, 255, 255, 0.6)' }}>{data.text}</span>}
+            </Typography>
+        ),
     }
     return {
         itemNode: (

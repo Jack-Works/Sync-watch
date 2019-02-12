@@ -2,7 +2,7 @@
 
 <center>Watch video with your friend</center>
 
-Offical host: http://vola.xyz:8765/
+Offical host: https://sync-watch.vola.xyz/
 
 (Welcome to contribute your GUN server!)
 

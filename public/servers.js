@@ -9,7 +9,7 @@
         // use public gun server?
         (() => (
             console.warn('You are using public gun server. Maybe you should build your own one'),
-            'http://gungame.herokuapp.com/gun'
+            'https://gungame.herokuapp.com/gun'
         ))(),
     ]
     if (location.hostname === 'localhost') {

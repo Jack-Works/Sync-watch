@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import MediaPlayer from 'react-uwp/MediaPlayer'
 import { getStore, getChatroom } from '../Network'
 import { messages } from '../utils'
@@ -77,9 +77,16 @@ export default function Composed(props: Props) {
             removeEventListener('sync-progress', PublishProgressToRemote)
         }
     })
+    const media = matchMedia('(max-width: 850px)')
+    const [height, setHeight] = useState(media.matches ? '50vh' : '100vh')
+    useEffect(() => {
+        const l = () => setHeight(media.matches ? '50vh' : '100vh')
+        media.addListener(l)
+        return () => media.removeListener(l)
+    })
     return (
-        <div style={{ flex: 7 }}>
-            <MediaPlayer ref={ref} width={'100%' as any} height={'100vh' as any} url={props.src} />
+        <div style={{ flex: 7 }} className="videoPlayer">
+            <MediaPlayer ref={ref} width={'100%' as any} height={height as any} url={props.src} />
         </div>
     )
 }

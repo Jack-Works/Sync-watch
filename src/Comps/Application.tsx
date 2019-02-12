@@ -10,9 +10,9 @@ enum AppState {
 }
 export default function Application() {
     const [state, setState] = useState(AppState.SetSessionID)
-    const [video, setVideo] = useState('')
-    const [name, setName] = useState('')
-    const [session, setSession] = useState('')
+    const [video, setVideo] = useState('https://www.youtube.com/watch?v=MOrwW6avyGU')
+    const [name, setName] = useState(Math.random().toString())
+    const [session, setSession] = useState('test-session' + new Date().getDate() + new Date().getHours())
 
     switch (state) {
         case AppState.SetSessionID:

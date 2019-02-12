@@ -1,12 +1,18 @@
 body {
     margin: 0;
     padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
-        'Droid Sans', 'Helvetica Neue', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 
     overflow: hidden;
+}
+input,
+textarea,
+select,
+button,
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Microsoft Yahei UI Light', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+        'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 }
 
 #root {
@@ -23,17 +29,39 @@ main {
 main [class^='media-player'] {
     width: 100%;
 }
+/* For input on mobile */
+div[class^='text-box-input'] {
+    min-height: 32px;
+}
 
 .dialog {
     width: 100vw;
     min-height: 300px;
     padding: 3em 15vw;
+    padding-bottom: 0;
     background: hsl(215, 70%, 30%);
     display: flex;
     flex-direction: column;
     transition: 400ms;
     height: 0;
     align-self: center;
+}
+
+.videoPlayer > * {
+    width: 100%;
+}
+@media screen and (max-width: 850px) {
+    .dialog {
+        height: 100vh;
+        padding: 3em;
+        padding-bottom: 0;
+    }
+    main {
+        display: block;
+    }
+    .videoPlayer > * {
+        height: 100%;
+    }
 }
 .dialog nav + * {
     flex: 1;

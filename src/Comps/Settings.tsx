@@ -153,7 +153,7 @@ export function AskSession(props: { onNext(name: string): void }) {
                             placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
                             ref={ref}
                             spellCheck={false}
-                            style={{ width: 350 }}
+                            style={{ maxWidth: 350, width: '100%' }}
                         />
                     )}
                 </Typography>

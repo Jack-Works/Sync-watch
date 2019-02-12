@@ -6,11 +6,14 @@ import Button from 'react-uwp/Button'
 export function ChooseVideo(props: { onNext(url: string): void; session: string }) {
     const input = React.useRef<HTMLInputElement>(null)
     const dialog = React.useRef<HTMLDivElement>(null)
+    const [showOnline, setShowOnline] = useState(true)
     let url = ''
     const store = getStore(props.session).get('onlineVideo')
     store.once(onNext)
+    useEffect(() => (store.once(onNext), () => store.off()))
     function onNext(url?: string) {
         if (!url) return
+        if (url === 'blob://') return showOnline && setShowOnline(false)
         if (url.startsWith('https://') || url.startsWith('http://')) store.put(url)
         props.onNext(url)
     }
@@ -23,6 +26,7 @@ export function ChooseVideo(props: { onNext(url: string): void; session: string 
         const file = files.item(0)
         if (!file) return
         url = URL.createObjectURL(file)
+        store.put('blob://') // 告诉其他实例不要显示在线选项
         return url
     }
 
@@ -54,7 +58,7 @@ export function ChooseVideo(props: { onNext(url: string): void; session: string 
                 }}
                 onDragOverCapture={onEnter}>
                 <Typography withSpan>{ty => <h1 style={ty.subHeader}>想看什么？</h1>}</Typography>
-                <Typography withSpan>{ty => <h1 style={ty.subTitleAlt}>本地视频</h1>}</Typography>
+                <Typography withSpan>{ty => <h2 style={ty.subTitleAlt}>本地视频</h2>}</Typography>
                 <Typography withSpan>
                     {ty => (
                         <span style={ty.body}>
@@ -68,17 +72,23 @@ export function ChooseVideo(props: { onNext(url: string): void; session: string 
                     )}
                 </Typography>
                 <Typography withSpan>{ty => <h1 style={ty.subTitleAlt}>网络视频</h1>}</Typography>
-                <Typography withSpan>
-                    {ty => (
-                        <Input
-                            autoFocus
-                            onCommit={onNext}
-                            type="url"
-                            icon="Link"
-                            placeholder="视频文件地址，或 Youtube 链接"
-                        />
-                    )}
-                </Typography>
+                {showOnline ? (
+                    <Typography withSpan>
+                        {ty => (
+                            <Input
+                                autoFocus
+                                onCommit={onNext}
+                                type="url"
+                                icon="Link"
+                                placeholder="视频文件地址，或 Youtube 链接"
+                            />
+                        )}
+                    </Typography>
+                ) : (
+                    <Typography withSpan>
+                        {ty => <h1 style={ty.body}>不可用，其他实例已经选择了本地视频。</h1>}
+                    </Typography>
+                )}
             </div>
         </main>
     )

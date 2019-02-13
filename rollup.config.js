@@ -28,7 +28,7 @@ const config = {
             var head = window.shadowRoot
             var style`,
         }),
-        typescript(),
+        typescript({ tsconfigOverride: { compilerOptions: { jsx: 'react', isolatedModules: false, allowJs: true } } }),
         commonjs({
             extensions: ['.js', '.ts', '.tsx'],
             namedExports: {

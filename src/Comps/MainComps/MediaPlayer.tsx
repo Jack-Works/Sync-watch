@@ -17,22 +17,17 @@ interface Props {
     src: string
     session: string
     name: string
+    workWith?: HTMLVideoElement
 }
 
 let firstLoad = true
-export default function Composed(props: Props) {
-    const store = getStore(props.session)
-    const chatRoom = getChatroom(props.session, props.name)
-    const ref = React.useRef<MediaPlayer>(null)
 
-    if (firstLoad && props.src.match('youtube.')) {
-        chatRoom.broadcastLocal('Youtube 视频如果黑屏，请尝试刷新重新进入')
-        firstLoad = false
-    }
-
+function useVideo(session: string, name: string, ref: any) {
+    const store = getStore(session)
+    const chatRoom = getChatroom(session, name)
     useEffect(() => {
-        if (!ref.current) return
-        const video = new AbstractVideoElement(ref.current)
+        if (!ref) return
+        const video = new AbstractVideoElement(ref)
         let node = store.get('currentTime')
         let node2 = store.get('isPlaying')
 
@@ -63,7 +58,7 @@ export default function Composed(props: Props) {
             const playingStatus = (event: Parameters<Parameters<typeof video.addEventListener>[1]>[0]) => {
                 if (!event.isTrusted) return
                 store.get('isPlaying').put(!video.paused)
-                getChatroom(props.session, props.name).broadcast(!video.paused ? messages.RESUMED : messages.PAUSED)
+                getChatroom(session, name).broadcast(!video.paused ? messages.RESUMED : messages.PAUSED)
                 console.info('同步播放状态', !video.paused)
             }
             video.addEventListener('play', playingStatus)
@@ -77,6 +72,18 @@ export default function Composed(props: Props) {
             removeEventListener('sync-progress', PublishProgressToRemote)
         }
     })
+}
+
+function Site(props: Props) {
+    const chatRoom = getChatroom(props.session, props.name)
+    const ref = React.useRef<MediaPlayer>(null)
+
+    if (firstLoad && props.src.match('youtube.')) {
+        chatRoom.broadcastLocal('Youtube 视频如果黑屏，请尝试刷新重新进入')
+        firstLoad = false
+    }
+
+    useVideo(props.session, props.name, ref.current)
     const media = matchMedia('(max-width: 850px)')
     const [height, setHeight] = useState(media.matches ? '50vh' : '100vh')
     useEffect(() => {
@@ -89,4 +96,13 @@ export default function Composed(props: Props) {
             <MediaPlayer ref={ref} width={'100%' as any} height={height as any} url={props.src} />
         </div>
     )
+}
+function Extension(props: Props) {
+    useVideo(props.session, props.name, props.workWith)
+    return <> </>
+}
+
+export default function(props: Props) {
+    if (props.workWith) return <Extension {...props} />
+    else return <Site {...props} />
 }

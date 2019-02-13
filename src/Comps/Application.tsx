@@ -8,11 +8,13 @@ enum AppState {
     SetSessionID,
     Main,
 }
-export default function Application() {
+export default function Application({ workWith }: { workWith?: HTMLVideoElement }) {
     const [state, setState] = useState(AppState.SetSessionID)
     const [video, setVideo] = useState('https://www.youtube.com/watch?v=MOrwW6avyGU')
     const [name, setName] = useState(Math.random().toString())
     const [session, setSession] = useState('test-session' + new Date().getDate() + new Date().getHours())
+
+    if (workWith && state === AppState.ChooseVideo) setState(AppState.SetName)
 
     switch (state) {
         case AppState.SetSessionID:
@@ -22,7 +24,7 @@ export default function Application() {
         case AppState.SetName:
             return <AskName onNext={val => (setName(val), setState(AppState.Main))} />
         case AppState.Main:
-            return <Main name={name} src={video} session={session} />
+            return <Main workWith={workWith} name={name} src={video} session={session} />
         default:
             throw new TypeError('Invalid application state')
     }

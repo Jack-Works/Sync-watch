@@ -7,7 +7,6 @@ import { Input, messages } from '../utils'
 import Typography from '../Typography'
 import CommandBar from 'react-uwp/CommandBar'
 import AppBarButton from 'react-uwp/AppBarButton'
-import AppBarSeparator from 'react-uwp/AppBarSeparator'
 
 interface Props {
     data: MessageWithTime[]

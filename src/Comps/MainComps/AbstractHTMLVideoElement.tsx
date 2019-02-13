@@ -27,12 +27,17 @@ export class AbstractVideoElement extends EventEmitter
         (resolve, reject) => ((this.ready = () => (resolve(), this.onReady())), (this.readyFail = reject)),
     )
     private get rawPlayer() {
-        if (this.player.player && this.player.player.player) {
-            if (this.player.player.player instanceof HTMLVideoElement) return this.player.player.player
-            else if (this.player.player.player.getPlayerState) return this.player.player.player
+        if (this.ref instanceof HTMLVideoElement) return this.ref
+        if (this.player!.player && this.player!.player.player) {
+            if (this.player!.player.player instanceof HTMLVideoElement) return this.player!.player.player
+            else if (this.player!.player.player.getPlayerState) return this.player!.player.player
         }
     }
-    constructor(ref: MediaPlayer, private url = ref.props.url!, private player: ReactPlayer = ref.reactPlayer) {
+    constructor(
+        private ref: MediaPlayer | HTMLVideoElement,
+        private url = ref instanceof HTMLVideoElement ? ref.src : ref.props.url!,
+        private player: ReactPlayer | null = ref instanceof HTMLVideoElement ? null : ref.reactPlayer,
+    ) {
         super()
         let timer: any
         this.timers.push(
@@ -106,13 +111,13 @@ export class AbstractVideoElement extends EventEmitter
     private isTrustedStatus = true
     get currentTime() {
         if (this.isPlayerNative(this.rawPlayer)) return this.rawPlayer.currentTime
-        else if (this.isPlayerYoutube(this.rawPlayer)) return this.player.getCurrentTime()
+        else if (this.isPlayerYoutube(this.rawPlayer)) return this.player!.getCurrentTime()
         throw this.UnknownState
     }
     set currentTime(time: number) {
         this.isTrustedSeek = false
         if (this.isPlayerNative(this.rawPlayer)) this.rawPlayer.currentTime = time
-        else if (this.isPlayerYoutube(this.rawPlayer)) this.player.seekTo(time)
+        else if (this.isPlayerYoutube(this.rawPlayer)) this.player!.seekTo(time)
     }
     get paused() {
         if (this.isPlayerNative(this.rawPlayer)) return this.rawPlayer.paused

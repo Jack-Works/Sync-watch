@@ -63,6 +63,21 @@ div[class^='text-box-input'] {
         height: 100%;
     }
 }
+
+:host([data-sync-watch='extension']) .dialog {
+    height: 100vh;
+    padding: 3em;
+    padding-bottom: 0;
+}
+:host([data-sync-watch='extension']) main,
+:host([data-sync-watch='extension']) .dialog {
+    display: block;
+    width: 100%;
+}
+:host([data-sync-watch='extension']) h1 {
+    color: white;
+}
+
 .dialog nav + * {
     flex: 1;
 }

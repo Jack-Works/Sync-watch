@@ -11,6 +11,11 @@
             console.warn('You are using public gun server. Maybe you should build your own one'),
             'https://gungame.herokuapp.com/gun'
         ))(),
+        // use vola sync server?
+        (() => (
+            console.warn('You are using vola public gun server. Maybe you should build your own one'),
+            'https://sync-watch.vola.xyz/gun'
+        ))(),
     ]
     if (location.hostname === 'localhost') {
         servers.push('http://localhost:8765/gun')

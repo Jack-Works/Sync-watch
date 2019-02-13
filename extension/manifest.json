@@ -1,0 +1,12 @@
+{
+    "name": "Sync watch",
+    "version": "1.0",
+    "description": "Extension version of sync watch",
+    "manifest_version": 2,
+    "content_scripts": [
+        {
+            "matches": ["https://www.bilibili.com/video/av*"],
+            "js": ["out.js"]
+        }
+    ]
+}

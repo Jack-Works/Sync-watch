@@ -22,12 +22,12 @@ interface Props {
 
 let firstLoad = true
 
-function useVideo(session: string, name: string, ref: any) {
+function useVideo(session: string, name: string, ref: { current: any }) {
     const store = getStore(session)
     const chatRoom = getChatroom(session, name)
     useEffect(() => {
-        if (!ref) return
-        const video = new AbstractVideoElement(ref)
+        if (!ref.current) return
+        const video = new AbstractVideoElement(ref.current)
         let node = store.get('currentTime')
         let node2 = store.get('isPlaying')
 
@@ -82,8 +82,8 @@ function Site(props: Props) {
         chatRoom.broadcastLocal('Youtube 视频如果黑屏，请尝试刷新重新进入')
         firstLoad = false
     }
+    useVideo(props.session, props.name, ref)
 
-    useVideo(props.session, props.name, ref.current)
     const media = matchMedia('(max-width: 850px)')
     const [height, setHeight] = useState(media.matches ? '50vh' : '100vh')
     useEffect(() => {
@@ -98,7 +98,7 @@ function Site(props: Props) {
     )
 }
 function Extension(props: Props) {
-    useVideo(props.session, props.name, props.workWith)
+    useVideo(props.session, props.name, { current: props.workWith })
     return <> </>
 }
 

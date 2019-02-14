@@ -129,6 +129,7 @@ export function AskName(props: { onNext(name: string): void }) {
 
 import { getStore } from './Network'
 const uuidRegex = /^([a-z0-9]{8}-([a-z0-9]{4}-){3}[a-z0-9]{12})$/g
+const demoUuid = uuid()
 export function AskSession(props: { onNext(name: string): void }) {
     const [shareCode, setShareCode] = useState('')
     const ref = useRef<typeof setShareCode>(null)
@@ -168,12 +169,19 @@ export function AskSession(props: { onNext(name: string): void }) {
                     )}
                 </Typography>
                 <Typography withSpan>
-                    {ty => <p style={ty.body}>如果是其他人邀请您前来，他们会向你提供一个共享码。</p>}
+                    {ty => (
+                        <p style={ty.body}>
+                            如果你是由他人邀请而来的，他们应该会向你提供一个共享码，请将其填写在上面的文本框。
+                            <br />
+                            共享码看起来像这样：
+                            {demoUuid}
+                        </p>
+                    )}
                 </Typography>
                 <Typography withSpan>
                     {ty => (
                         <p style={ty.body}>
-                            如果您希望邀请其他人，请点击这里{' ' /** 别删除这个空格。排版用。 */}
+                            希望邀请他人？请点击以{' ' /** 别删除这个空格。排版用。 */}
                             <Button
                                 onClick={() => {
                                     const u = uuid()
@@ -196,8 +204,8 @@ export function AskSession(props: { onNext(name: string): void }) {
                 <Typography withSpan>
                     {ty => (
                         <span style={{ ...ty.caption, color: 'yellow', opacity: 0.7 }}>
-                            使用不同共享码的人不会加入同一个房间，但共享码不是密码，其他人仍然有可能获知房间内的聊天内容。
-                            请注意保护个人隐私。
+                            不同的共享码能够区分你和其他陌生人，但它无法确保聊天记录不会外泄，请注意保护隐私。
+                            另外，由于本软件协议特性，聊天效果可能略差，建议使用其他聊天软件交流视频内容。
                         </span>
                     )}
                 </Typography>

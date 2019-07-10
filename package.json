@@ -11,7 +11,7 @@
     "@types/react-dom": "16.8.0",
     "@types/uuid": "^3.4.4",
     "@types/youtube": "^0.0.35",
-    "gun": "^0.9.9999991",
+    "gun": "^0.2019.416",
     "lodash.memoize": "^4.1.2",
     "lodash.takeright": "^4.1.1",
     "react": "^16.8.1",

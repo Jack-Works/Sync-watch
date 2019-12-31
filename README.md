@@ -1,24 +1,34 @@
-# <center>Sync Watch</center>
+# Sync Watch
 
-<center>Watch video with your friend</center>
+> **This project is no longer maintained, last update at Feb 14, 2019**
 
-Offical host: https://sync-watch.vola.xyz/
+- Watch video with your friend.
+- Play local file (Sync Watch will not share it for you) or Youtube.
+- Sync watch progress and chat.
 
-(Welcome to contribute your GUN server!)
+Have a try at https://sync-watch.vola.xyz/
 
-## Build
+## Details
 
-Edit [public/servers.js](./public/servers.js) to set [GUN](https://github.com/amark/gun) servers.
+<img src="https://raw.githubusercontent.com/Jack-Works/Sync-watch/master/screenshot.png" width="400" alt="A screenshot of Sync Watch" />
+
+Sync watch is an experimental project that built with [GUN.js](https://github.com/amark/gun) (as the decentralized database) and [React UWP](https://www.react-uwp.com/).
+
+Welcome to contribute your GUN server!
+
+### Host your own instance
+
+#### Frontend
+
+Edit [./public/servers.js](./public/servers.js) to set your own [GUN](https://github.com/amark/gun) servers.
 
 > yarn
 
 > yarn build
 
-then host anywhere.
-
-## Build with your own Server
+#### Backend
 
 See:
 https://github.com/Jack-Works/sync-watch-server
 
-(And this is just a GUN server)
+(It is a plain GUN server.)

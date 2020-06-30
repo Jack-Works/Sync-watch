@@ -1,6 +1,6 @@
 # Sync Watch
 
-> **This project is no longer maintained, last update at Feb 14, 2019**
+> **This project is no longer maintained, last update at Feb 14, 2019, You can use other projects like https://github.com/samuelmaddock/metastream**
 
 - Watch video with your friend.
 - Play local file (Sync Watch will not share it for you) or Youtube.
